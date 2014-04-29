@@ -1,0 +1,7 @@
+---
+- name: Copy the EPEL repository definition
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+- name: Copy the Gluster 3.5 LATEST repository definition
+  copy: src=glusterfs-epel.repo dest=/etc/yum.repos.d/glusterfs-epel.repo
+
