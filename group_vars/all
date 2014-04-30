@@ -1,0 +1,7 @@
+# Defaults to first ethernet interface. Change to 
+#
+# iface: eth1
+#
+# to override
+iface: '{{ ansible_default_ipv4.interface }}'
+#iface: eth0

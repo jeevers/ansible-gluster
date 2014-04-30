@@ -5,3 +5,5 @@
 - name: Copy the Gluster 3.5 LATEST repository definition
   copy: src=glusterfs-epel.repo dest=/etc/yum.repos.d/glusterfs-epel.repo
 
+- name: Create hosts file for all machines in gluster group
+  template: src=etc/hosts.j2 dest=/etc/hosts
