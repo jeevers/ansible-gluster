@@ -5,3 +5,6 @@
 # to override
 iface: '{{ ansible_default_ipv4.interface }}'
 #iface: eth0
+disks:
+  - vdb
+  - vdc

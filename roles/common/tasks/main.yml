@@ -7,3 +7,31 @@
 
 - name: Create hosts file for all machines in gluster group
   template: src=etc/hosts.j2 dest=/etc/hosts
+
+- name: Install GlusterFS packages
+  yum: name={{ item }} state=present
+  with_items:
+    - glusterfs
+    - glusterfs-fuse
+    - glusterfs-geo-replication
+    - glusterfs-server
+    - xfsprogs
+
+- name: Start GlusterFS service
+  service: name=glusterd state=started enabled=true
+
+#- name: Create directories for bricks
+#  file: path=/gluster/{{ item }} state=absent
+#  with_items: disks
+
+- name: Make partitions for bricks
+  command: /sbin/parted -s -a optimal /dev/{{ item }} mklabel gpt -- mkpart primary 1 -1 creates=/dev/{{ item }}1
+  with_items: disks
+
+- name: Format bricks with XFS filesystem
+  filesystem: fstype=xfs dev=/dev/{{ item }}1 opts="-i size=512"
+  with_items: disks
+
+- name: Create brick mounts
+  mount: name=/gluster/{{ item }} src=/dev/{{ item }}1 fstype=xfs state=mounted
+  with_items: disks
