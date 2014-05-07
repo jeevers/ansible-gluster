@@ -16,6 +16,10 @@
     - glusterfs-geo-replication
     - glusterfs-server
     - xfsprogs
+    - nfs-utils
+
+- name: Start rpcbind service
+  service: name=rpcbind state=started enabled=true
 
 - name: Start GlusterFS service
   service: name=glusterd state=started enabled=true
@@ -34,4 +38,8 @@
 
 - name: Create brick mounts
   mount: name=/gluster/{{ item }} src=/dev/{{ item }}1 fstype=xfs state=mounted
+  with_items: disks
+
+- name: Create brick subdirectories
+  file: path=/gluster/{{ item }}/brick state=directory
   with_items: disks
